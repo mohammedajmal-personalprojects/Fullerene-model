@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080e17">
+<title>C₆₀ — Carbon Structure Study</title><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--ink:#eff5f7;--muted:#a2b0bc;--subtle:#748391;--line:rgba(210,231,239,.13);--mint:#77e5ca;--coral:#ff9279;--sky:#8dcaff;--gold:#d8f36a;--base:#080e17;font:16px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--ink);background:radial-gradient(ellipse at 74% -10%,rgba(35,92,104,.25),transparent 35rem),radial-gradient(ellipse at 2% 25%,rgba(61,53,105,.14),transparent 31rem),var(--base)}
+button,input{font:inherit;color:inherit}button{cursor:pointer}.shell{max-width:1240px;margin:auto;padding:0 34px 64px}
+.topbar{height:74px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);gap:20px}
+.brand{display:flex;align-items:center;gap:11px;font-size:13px;letter-spacing:.13em;font-weight:700;text-transform:uppercase}.brand svg{width:26px;height:26px;color:var(--mint)}
+.top-note{color:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.hero{display:grid;grid-template-columns:1fr auto;align-items:end;gap:28px;padding:43px 0 29px}.eyebrow,.section-kicker{color:var(--mint);font-size:10px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;margin:0 0 11px}
+h1{font-size:clamp(36px,5.5vw,68px);line-height:.99;letter-spacing:-.055em;margin:0;max-width:760px;font-weight:600}
+.hero p:not(.eyebrow){color:var(--muted);max-width:660px;margin:17px 0 0;font-size:15px}
+.hero-mark{width:112px;height:112px;color:rgba(119,229,202,.72);margin:0 12px 0 0}.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:17px}.pill{border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:#c4d2dc;font-size:10px;letter-spacing:.04em}
+.workspace{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(265px,.7fr);gap:18px;align-items:stretch}
+.model-card,.inspect-card,.lesson-card,.quiz-card{background:linear-gradient(145deg,rgba(17,30,43,.94),rgba(11,20,30,.97));border:1px solid var(--line);border-radius:18px}
+.model-card{padding:16px;min-width:0}.model-head{display:flex;justify-content:space-between;align-items:center;padding:1px 2px 12px;gap:12px}.model-head strong{font-size:13px}
+.live-label{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:10px;white-space:nowrap}.live-dot{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 12px rgba(119,229,202,.8)}
+.stage{position:relative;min-height:410px;overflow:hidden;border-radius:13px;background:radial-gradient(ellipse at 50% 48%,rgba(22,67,76,.25),transparent 34%),radial-gradient(ellipse at 50% 100%,rgba(8,13,21,.9),transparent 56%),#09121c;border:1px solid rgba(202,227,238,.09)}
+.stage:before{content:"";position:absolute;width:min(74%,420px);aspect-ratio:1;left:50%;top:50%;transform:translate(-50%,-49%);border:1px solid rgba(119,229,202,.08);border-radius:50%;box-shadow:0 0 0 34px rgba(119,229,202,.018),0 0 0 70px rgba(119,229,202,.012);pointer-events:none}
+canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab}canvas:active{cursor:grabbing}
+.stage-tag{position:absolute;top:14px;left:14px;display:inline-flex;align-items:center;gap:7px;background:rgba(8,14,23,.72);border:1px solid rgba(207,232,241,.13);border-radius:99px;color:#d9e6ed;font-size:9px;padding:6px 9px;letter-spacing:.08em;text-transform:uppercase;pointer-events:none;backdrop-filter:blur(8px)}
+.tag-dot{width:6px;height:6px;border-radius:50%;background:var(--mint)}.stage-hint{position:absolute;bottom:12px;left:15px;color:rgba(197,213,222,.72);font-size:9px;letter-spacing:.035em;pointer-events:none}.stage-count{position:absolute;right:15px;bottom:13px;color:#bac8d1;font-size:9px;letter-spacing:.06em;pointer-events:none}
+.control-block{display:flex;justify-content:space-between;gap:10px;margin-top:12px;align-items:center}.mode-row,.action-row{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.mode-btn,.action-btn,.quiz-option{border:1px solid rgba(214,232,239,.14);background:rgba(255,255,255,.025);border-radius:9px;transition:background .18s,border-color .18s}
+.mode-btn{font-size:10px;color:#c3d0d8;padding:7px 9px}.mode-btn:hover,.action-btn:hover,.quiz-option:hover{border-color:rgba(119,229,202,.55);background:rgba(119,229,202,.08)}
+.mode-btn[aria-pressed=true]{border-color:rgba(119,229,202,.48);color:#dffcf4;background:rgba(119,229,202,.12)}
+.action-btn{padding:7px 9px;color:#d5e0e6;font-size:10px}.action-btn.primary{border-color:rgba(119,229,202,.38);color:#dffcf4;background:rgba(119,229,202,.1)}.action-btn.danger{border-color:rgba(255,121,111,.35);color:#ffc2ba}
+button:focus-visible,canvas:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.selected-bar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;border-top:1px solid var(--line);margin-top:13px;padding:12px 2px 1px;color:var(--muted);font-size:10px}
+.selected-copy b{color:var(--ink);font-weight:600}.speed-control{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:10px}input[type=range]{width:96px;accent-color:var(--mint)}
+.side-stack{display:flex;flex-direction:column;gap:14px;min-width:0}.inspect-card{padding:19px;flex:1}.side-eyebrow,.neighbor-title{color:var(--subtle);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin:0 0 14px}
+.atom-heading{display:flex;align-items:center;gap:13px;margin-bottom:14px}.atom-symbol{width:53px;height:53px;border:1px solid rgba(119,229,202,.45);background:rgba(119,229,202,.14);border-radius:50%;display:grid;place-items:center;color:#c9fff1;font-size:22px;box-shadow:inset 0 0 23px rgba(119,229,202,.06)}
+.atom-heading h2{margin:0;font-size:20px;letter-spacing:-.03em;line-height:1.15}.atom-heading p{margin:4px 0 0;color:var(--muted);font-size:10px}
+.inspect-copy{color:#bdcbd4;font-size:11px;margin:0 0 15px;min-height:50px}.neighbor-title{margin:0 0 8px}.neighbor-list{display:flex;flex-wrap:wrap;gap:6px;min-height:27px}.neighbor-chip{border:1px solid var(--line);border-radius:7px;color:#dbe7ec;font-size:9px;padding:4px 7px;background:rgba(255,255,255,.025)}
+.inspect-foot{margin-top:15px;padding-top:13px;border-top:1px solid var(--line);color:var(--muted);font-size:9px}.inspect-foot b{color:#e8f2f5;font-weight:500}.vacancy-note{display:none;margin-top:12px;padding:10px;border-radius:9px;color:#ffd4cd;background:rgba(255,121,111,.09);border:1px solid rgba(255,121,111,.2);font-size:9px}.vacancy-note.visible{display:block}
+.quick-facts{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;overflow:hidden;border:1px solid var(--line);border-radius:13px;background:var(--line)}
+.fact{padding:13px 14px;background:#0c1621;min-width:0}.fact strong{display:block;color:#eef7f8;font-size:20px;letter-spacing:-.04em;line-height:1.2}.fact span{display:block;color:var(--muted);font-size:9px;margin-top:3px}
+.lower{display:grid;grid-template-columns:1.28fr .72fr;gap:18px;margin-top:22px;align-items:start}.lesson-card,.quiz-card{padding:21px}.section-kicker{margin-bottom:8px}.section-title{margin:0;font-size:25px;line-height:1.1;letter-spacing:-.04em;font-weight:600}.section-intro{max-width:650px;color:var(--muted);font-size:11px;margin:10px 0 17px}
+.lesson-tabs{display:flex;gap:5px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:9px}.lesson-tab{background:transparent;border:0;color:var(--muted);padding:7px 9px;font-size:10px;border-radius:7px}.lesson-tab[aria-selected=true]{color:#eafff9;background:rgba(119,229,202,.11)}
+.lesson-panel{padding:15px 2px 2px;color:#c5d1d9;font-size:11px;min-height:112px}.lesson-panel h3{color:#f1f7f8;font-size:13px;margin:0 0 7px;font-weight:600}.lesson-panel p{margin:0 0 9px}.lesson-panel strong{color:#f2f7f8;font-weight:600}.callout{color:#d5e9e8;border-left:2px solid var(--mint);padding:7px 10px;background:rgba(119,229,202,.055);border-radius:0 7px 7px 0}
+.math-line{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:10px 0}.math-chip{color:#d9f9f2;background:rgba(119,229,202,.1);border:1px solid rgba(119,229,202,.17);border-radius:7px;padding:5px 8px;font-size:10px}
+.bond-legend{display:flex;flex-wrap:wrap;gap:11px;margin-top:9px;color:var(--muted);font-size:9px}.legend-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:0}
+.quiz-card .section-title{font-size:21px}.quiz-question{color:#eaf2f4;font-size:12px;margin:17px 0 11px;font-weight:500}.quiz-options{display:grid;gap:7px}.quiz-option{text-align:left;font-size:10px;color:#c4d1d8;padding:9px 10px}
+.quiz-option.correct{border-color:rgba(119,229,202,.6);background:rgba(119,229,202,.12);color:#e5fff7}.quiz-option.wrong{border-color:rgba(255,121,111,.5);background:rgba(255,121,111,.09);color:#ffd4cd}
+.quiz-feedback{min-height:38px;margin-top:10px;color:var(--muted);font-size:9px}.quiz-next{margin-top:5px}
+.closing{display:flex;justify-content:space-between;align-items:center;gap:16px;border-top:1px solid var(--line);margin-top:25px;padding-top:15px;color:var(--subtle);font-size:9px}
+.source-links{display:flex;flex-wrap:wrap;gap:13px}.source-links a{color:#9db7c1;text-decoration:underline;text-decoration-color:rgba(157,183,193,.35);text-underline-offset:3px}.source-links a:hover{color:var(--mint)}
+@media(max-width:850px){.workspace{grid-template-columns:minmax(0,1.15fr) minmax(235px,.8fr)}.stage{min-height:360px}.lower{grid-template-columns:1fr}}
+@media(max-width:650px){.shell{padding:0 16px 44px}.topbar{height:62px}.top-note,.hero-mark{display:none}.hero{grid-template-columns:1fr;padding:33px 0 22px}.hero p:not(.eyebrow){font-size:13px}.workspace{grid-template-columns:1fr}.stage{min-height:min(112vw,390px)}.control-block{align-items:flex-start;flex-direction:column}.mode-row,.action-row{width:100%}.mode-btn,.action-btn{flex:1;padding:8px 6px}.quick-facts{grid-template-columns:repeat(4,1fr)}.fact{padding:10px 7px}.fact strong{font-size:17px}.fact span{font-size:8px}.closing{align-items:flex-start;flex-direction:column}}
+@media(max-width:380px){.shell{padding-left:12px;padding-right:12px}.model-card{padding:11px}.mode-btn{font-size:9px}.quick-facts{grid-template-columns:repeat(2,1fr)}.speed-control{width:100%;justify-content:flex-end}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+:root{--ink:#f2f0e8;--muted:#aaa89f;--subtle:#77766f;--line:rgba(242,240,232,.16);--mint:#d8f36a;--coral:#ff9a7d;--sky:#9acbff;--gold:#e6f67a;--base:#050505;font-family:"DM Sans",Arial,sans-serif}
+body{background:#050505}
+h1,h2,h3,.brand{font-family:"Space Grotesk","DM Sans",Arial,sans-serif}
+.eyebrow,.section-kicker,.top-note,.stage-tag,.stage-hint,.stage-count,.side-eyebrow,.neighbor-title,.selected-bar,.fact span{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.shell{max-width:1320px;padding:0 42px 64px}
+.topbar{height:68px;border-color:var(--line)}
+.brand{font-size:11px;letter-spacing:.09em}
+.brand svg{color:var(--mint)}
+.top-note{font-size:10px;letter-spacing:.04em}
+.hero{padding:62px 0 38px;gap:36px}
+h1{font-size:clamp(46px,7.5vw,88px);line-height:.94;letter-spacing:-.065em;font-weight:500}
+.hero p:not(.eyebrow){color:#b8b6ad;max-width:650px;font-size:15px;line-height:1.7;margin-top:20px}
+.eyebrow,.section-kicker{color:var(--mint);font-size:10px;letter-spacing:.06em;font-weight:500}
+.hero-mark{color:rgba(216,243,106,.48);opacity:.68}
+.pill{border:0;border-radius:0;padding:0 13px 0 0;margin-right:6px;color:#c4c1b7;font:10px "IBM Plex Mono",monospace}
+.pill:not(:last-child):after{content:" /";color:#626158}
+.workspace{grid-template-columns:minmax(0,1.55fr) minmax(250px,.55fr);gap:46px}
+.model-card,.inspect-card,.lesson-card,.quiz-card{background:transparent;border:0;border-radius:0}
+.model-card{padding:0}
+.model-head{padding:0 0 14px}
+.model-head strong{font:500 15px "Space Grotesk",sans-serif;letter-spacing:-.015em}
+.live-label{font:10px "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.04em;color:#a8a69d}
+.live-dot{width:5px;height:5px;background:var(--mint);box-shadow:none}
+.stage{min-height:510px;border:0;border-radius:0;background:#050505}
+.stage:before{display:none}
+.stage-tag{top:15px;left:2px;background:none;border:0;border-radius:0;color:#b5b2a8;font-size:9px;padding:0;backdrop-filter:none}
+.tag-dot{background:var(--mint)}
+.stage-hint{left:2px;bottom:10px;color:#86847b;font-size:9px;letter-spacing:.025em}
+.stage-count{right:2px;bottom:10px;color:#aaa79d;font-size:9px}
+.control-block{margin-top:13px;gap:15px}
+.mode-row,.action-row{gap:10px}
+.mode-btn,.action-btn,.quiz-option{border-radius:3px;transition:color .28s ease,border-color .28s ease,background .28s ease,transform .28s cubic-bezier(.2,.75,.25,1)}
+.mode-btn{background:transparent;border:0;border-bottom:1px solid transparent;border-radius:0;color:#a9a69c;font-size:11px;padding:8px 2px 7px;margin-right:8px}
+.mode-btn:hover,.action-btn:hover,.quiz-option:hover{background:transparent;border-color:var(--mint);color:var(--ink)}
+.mode-btn[aria-pressed=true]{background:transparent;border-color:var(--mint);color:var(--mint)}
+.action-btn{border-color:rgba(242,240,232,.24);background:transparent;color:#dddacf;font-size:10px;padding:8px 11px}
+.action-btn.primary{border-color:var(--mint);background:var(--mint);color:#11120b}
+.action-btn.primary:hover{background:#e5ff8a;border-color:#e5ff8a;color:#11120b;transform:translateY(-1px)}
+.action-btn.danger{border-color:rgba(255,154,125,.45);color:#ffb39f}
+.selected-bar{font-size:10px;color:#aaa89f;padding-top:13px}
+.selected-copy b{color:var(--mint);font-weight:500}
+.speed-control{color:#aaa89f;font-family:"IBM Plex Mono",monospace}
+input[type=range]{accent-color:var(--mint)}
+.side-stack{gap:20px}
+.inspect-card{border-left:1px solid var(--line);padding:3px 0 0 25px}
+.side-eyebrow,.neighbor-title{font-size:9px;letter-spacing:.08em;color:#88867d}
+.atom-heading{gap:13px;margin:18px 0 16px}
+.atom-symbol{width:47px;height:47px;border:1px solid rgba(216,243,106,.52);background:transparent;border-radius:50%;color:var(--mint);font:500 22px "Space Grotesk",sans-serif;box-shadow:none}
+.atom-heading h2{font-size:19px;font-weight:500}
+.atom-heading p,.inspect-copy{color:#aaa89f}
+.inspect-copy{font-size:12px;line-height:1.7;min-height:64px}
+.neighbor-chip{border:1px solid rgba(242,240,232,.18);border-radius:2px;background:transparent;color:#e0ddd2;font:10px "IBM Plex Mono",monospace;padding:5px 8px}
+.inspect-foot{border-color:var(--line);font-size:10px;color:#aaa89f}
+.inspect-foot b{color:#dddacf}
+.vacancy-note{background:rgba(255,154,125,.06);border:1px solid rgba(255,154,125,.25);border-radius:3px;font-size:10px;line-height:1.6}
+.quick-facts{grid-template-columns:repeat(2,1fr);gap:0 18px;border:0;border-radius:0;background:transparent}
+.fact{background:transparent;border-top:1px solid var(--line);padding:12px 0}
+.fact strong{font:500 24px "Space Grotesk",sans-serif;letter-spacing:-.045em}
+.fact span{color:#88867d;font-size:9px}
+.lower{grid-template-columns:1.25fr .75fr;gap:48px;margin-top:54px}
+.lesson-card,.quiz-card{padding:19px 0 0;border-top:1px solid var(--line)}
+.section-title{font-size:30px;font-weight:500;letter-spacing:-.045em}
+.section-intro{font-size:12px;line-height:1.7;color:#aaa89f}
+.lesson-tabs{gap:14px}
+.lesson-tab{border-radius:0;padding:7px 0;background:transparent;color:#8e8c83;font:10px "IBM Plex Mono",monospace;transition:color .25s ease}
+.lesson-tab[aria-selected=true]{background:transparent;color:var(--mint)}
+.lesson-panel{font-size:12px;line-height:1.75;color:#b8b6ad}
+.lesson-panel h3{font:500 17px "Space Grotesk",sans-serif;color:var(--ink)}
+.lesson-panel strong{color:var(--ink)}
+.math-chip{background:transparent;border:1px solid rgba(216,243,106,.3);border-radius:2px;color:var(--mint);font:10px "IBM Plex Mono",monospace}
+.callout{background:rgba(216,243,106,.045);border-radius:0;color:#c9c7bd}
+.quiz-card .section-title{font-size:27px}
+.quiz-question{font-size:12px;line-height:1.6}
+.quiz-option{text-align:left;border-radius:2px;padding:10px 11px;font-size:11px}
+.quiz-option.correct{border-color:var(--mint);background:rgba(216,243,106,.08);color:#e9f6c6}
+.quiz-option.wrong{border-color:var(--coral);background:rgba(255,154,125,.06);color:#ffd1c2}
+.quiz-feedback{font-size:10px;line-height:1.65}
+.closing{border-color:var(--line);font:9px "IBM Plex Mono",monospace;color:#77766f}
+.source-links a{color:#aaa89f;text-decoration-color:rgba(170,168,159,.35);transition:color .25s}
+.source-links a:hover{color:var(--mint)}
+@keyframes settle{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.hero{animation:settle .65s cubic-bezier(.2,.75,.25,1) both}
+.workspace{animation:settle .8s .08s cubic-bezier(.2,.75,.25,1) both}
+.lower{animation:settle .8s .16s cubic-bezier(.2,.75,.25,1) both}
+@media(max-width:850px){.workspace{grid-template-columns:minmax(0,1fr) minmax(225px,.65fr);gap:28px}.stage{min-height:420px}.lower{gap:34px}}
+@media(max-width:650px){.shell{padding:0 18px 42px}.hero{padding:42px 0 28px}.workspace{grid-template-columns:1fr;gap:24px}.stage{min-height:min(112vw,420px)}.inspect-card{border-left:0;border-top:1px solid var(--line);padding:20px 0 0}.quick-facts{grid-template-columns:repeat(4,1fr);gap:0 12px}.fact{padding:10px 0}.fact strong{font-size:19px}.fact span{font-size:8px}.lower{grid-template-columns:1fr;gap:24px;margin-top:40px}.lesson-card,.quiz-card{padding-top:18px}.closing{align-items:flex-start;flex-direction:column}.control-block{gap:10px}.mode-btn{margin-right:4px}}
+@media(max-width:380px){.shell{padding-left:13px;padding-right:13px}.quick-facts{grid-template-columns:repeat(2,1fr)}.mode-btn{font-size:9px}}
+@media(prefers-reduced-motion:reduce){.hero,.workspace,.lower{animation:none!important}*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}</style>
+</head>
+<body>
+<main class="shell">
+<header class="topbar">
+<div class="brand"><svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M20 3 32 10v20L20 37 8 30V10L20 3Z" stroke="currentColor" stroke-width="1.5"/><path d="m8 10 12 7 12-7M20 17v20M8 30l12-13 12 13" stroke="currentColor" opacity=".68"/><circle cx="20" cy="17" r="2.5" fill="currentColor"/></svg>Carbon / Structure study</div><div class="top-note">ALLOTROPES / C₆₀</div>
+</header>
+<section class="hero" aria-labelledby="page-title"><div><p class="eyebrow">Carbon allotrope · molecular model</p><h1 id="page-title">60 atoms.<br>A hollow cage.</h1><p>Buckminsterfullerene (C₆₀) is a carbon molecule built from 12 pentagons and 20 hexagons. Explore its shape, bonds, and a missing-atom defect.</p><div class="pills"><span class="pill">C₆₀</span><span class="pill">Buckminsterfullerene</span><span class="pill">Covalent network</span></div></div>
+<svg class="hero-mark" viewBox="0 0 120 120" fill="none" aria-hidden="true"><circle cx="60" cy="60" r="53" stroke="currentColor" opacity=".16"/><circle cx="60" cy="60" r="39" stroke="currentColor" opacity=".28"/><path d="m60 11 24 14v28L60 67 36 53V25L60 11Z" stroke="currentColor" opacity=".73"/><path d="m36 25 24 14 24-14M60 39v28M36 53l24-14 24 14M60 67l24 14V53M60 67 36 81V53M36 81l24 28 24-28" stroke="currentColor" opacity=".55"/></svg></section>
+
+<section class="workspace" aria-label="Interactive fullerene explorer">
+<div class="model-card"><div class="model-head"><strong>The C₆₀ cage</strong><span class="live-label"><i class="live-dot"></i><span id="modeCaption" aria-live="polite">Molecule view</span></span></div>
+<div class="stage"><div class="stage-tag"><i class="tag-dot"></i><span id="stageMode">Cage structure</span></div><canvas id="molecule" role="img" tabindex="0" aria-label="Interactive 3D model of buckminsterfullerene C60. Drag or use arrow keys to rotate; click an atom to inspect."></canvas><div class="stage-hint">DRAG TO ROTATE · SCROLL TO ZOOM · CLICK AN ATOM</div><div class="stage-count" id="stageCount">60 CARBON ATOMS</div></div>
+<div class="control-block"><div class="mode-row" role="group" aria-label="Model display"><button class="mode-btn" data-mode="shape" aria-pressed="true">Structure</button><button class="mode-btn" data-mode="bonds" aria-pressed="false">Bond types</button><button class="mode-btn" data-mode="rings" aria-pressed="false">Ring map</button><button class="mode-btn" data-mode="vacancy" aria-pressed="false">Vacancy</button></div><div class="action-row"><button class="action-btn primary" id="spinButton" aria-pressed="true">Ⅱ&nbsp; Pause spin</button><button class="action-btn" id="vacancyButton">Remove selected C</button><button class="action-btn" id="resetButton">Reset cage</button></div></div>
+<div class="selected-bar"><div class="selected-copy" id="selectedSummary" aria-live="polite">Selected: <b>C1</b> · 3 carbon neighbours</div><label class="speed-control" for="speed">Spin speed <input id="speed" type="range" min="0" max="100" value="38" aria-label="Rotation speed"></label></div>
+</div>
+<aside class="side-stack" aria-label="Selected atom and structure facts"><section class="inspect-card"><p class="side-eyebrow">Atom inspector</p><div class="atom-heading"><div class="atom-symbol" aria-hidden="true">C</div><div><h2 id="atomTitle">Carbon 01</h2><p id="atomSubtitle">One vertex in a closed cage</p></div></div><p class="inspect-copy" id="atomCopy" aria-live="polite">This carbon is connected to three neighboring carbon atoms. Select any glowing point on the model to inspect another one.</p><p class="neighbor-title">Its three neighbours</p><div class="neighbor-list" id="neighborList" aria-live="polite"></div><div class="inspect-foot" id="bondFoot"><b>Network:</b> three covalent connections meet at each carbon.</div><div class="vacancy-note" id="vacancyNote" aria-live="polite">A carbon has been removed in this simplified defect model. The missing site interrupts three connections; real molecules may rearrange around a defect.</div></section>
+<div class="quick-facts" aria-label="C60 at a glance"><div class="fact"><strong>60</strong><span>carbon atoms</span></div><div class="fact"><strong>90</strong><span>C–C bonds</span></div><div class="fact"><strong>12</strong><span>pentagons</span></div><div class="fact"><strong>20</strong><span>hexagons</span></div></div></aside></section>
+
+<section class="lower"><article class="lesson-card"><p class="section-kicker">Look closer</p><h2 class="section-title">A cage built from carbon.</h2><p class="section-intro">Each glowing sphere stands for one carbon atom; each connecting rod represents a covalent bond. Choose a topic to explore the chemistry behind the shape.</p>
+<div class="lesson-tabs" role="tablist" aria-label="Fullerene lesson topics"><button class="lesson-tab" id="tab-shape" role="tab" aria-controls="topic-panel" aria-selected="true" data-topic="shape">The shape</button><button class="lesson-tab" id="tab-valency" role="tab" aria-controls="topic-panel" aria-selected="false" data-topic="valency">Carbon valency</button><button class="lesson-tab" id="tab-bonds" role="tab" aria-controls="topic-panel" aria-selected="false" data-topic="bonds">Two bond types</button><button class="lesson-tab" id="tab-vacancies" role="tab" aria-controls="topic-panel" aria-selected="false" data-topic="vacancies">Vacancies</button></div>
+<div class="lesson-panel" id="topic-panel" role="tabpanel" aria-labelledby="tab-shape" aria-live="polite"><h3>Why does the cage curve?</h3><p>C₆₀ is a hollow molecular allotrope of carbon. Its 60 atoms sit at the corners of 12 pentagons and 20 hexagons. The five-sided rings introduce curvature, closing the carbon network into a rounded cage.</p><div class="math-line"><span class="math-chip">12 pentagons</span><span>+</span><span class="math-chip">20 hexagons</span><span>=</span><span class="math-chip">32 faces</span></div><p class="callout">Topology check: 60 vertices − 90 edges + 32 faces = 2, Euler’s relation for a closed polyhedron.</p></div></article>
+<aside class="quiz-card" aria-labelledby="quiz-title"><p class="section-kicker">Quick check</p><h2 class="section-title" id="quiz-title">Can you spot the pattern?</h2><div class="quiz-question" id="quizQuestion">Question 1 of 3 · How many carbon atoms are in C₆₀?</div><div class="quiz-options" id="quizOptions" role="group" aria-label="Answer choices"></div><div class="quiz-feedback" id="quizFeedback" aria-live="polite">Choose an answer to check what you remember.</div><button class="action-btn quiz-next" id="quizNext" hidden>Next question →</button></aside></section>
+<footer class="closing"><span>A classroom model of buckminsterfullerene · Rotate, inspect, and explain.</span><span class="source-links"><a href="https://edu.rsc.org/feature/symmetry-of-buckminsterfullerene/2020237.article" target="_blank" rel="noopener noreferrer">RSC Education · C₆₀ symmetry</a><a href="https://pubs.rsc.org/en/content/articlehtml/2020/cp/d0cp01282c" target="_blank" rel="noopener noreferrer">RSC · C₆₀ bond types</a></span></footer>
+</main>
+<script>
+(function(){
+"use strict";
+const canvas=document.getElementById("molecule"),ctx=canvas.getContext("2d"),modeButtons=[...document.querySelectorAll(".mode-btn")],speedControl=document.getElementById("speed"),reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches,phi=(1+Math.sqrt(5))/2;
+const ico=[[-1,phi,0],[1,phi,0],[-1,-phi,0],[1,-phi,0],[0,-1,phi],[0,1,phi],[0,-1,-phi],[0,1,-phi],[phi,0,-1],[phi,0,1],[-phi,0,-1],[-phi,0,1]];
+const f20=[[0,11,5],[0,5,1],[0,1,7],[0,7,10],[0,10,11],[1,5,9],[5,11,4],[11,10,2],[10,7,6],[7,1,8],[3,9,4],[3,4,2],[3,2,6],[3,6,8],[3,8,9],[4,9,5],[2,4,11],[6,2,10],[8,6,7],[9,8,1]];
+const k=(a,b)=>a+"_"+b, directed=new Map(),atoms=[],bonds=[],bondSet=new Set();let ai=0;
+for(let a=0;a<12;a++)for(let b=0;b<12;b++){if(a===b)continue;const d=Math.hypot(ico[a][0]-ico[b][0],ico[a][1]-ico[b][1],ico[a][2]-ico[b][2]);if(Math.abs(d-2)<1e-5){directed.set(k(a,b),ai);atoms.push({id:ai,neighbors:[],p:ico[a].map((v,i)=>(2*v+ico[b][i])/3)});ai++;}}
+function add(a,b,type){const lo=Math.min(a,b),hi=Math.max(a,b),id=lo+"-"+hi;if(bondSet.has(id))return;bondSet.add(id);bonds.push({a:lo,b:hi,type});atoms[lo].neighbors.push(hi);atoms[hi].neighbors.push(lo);}
+for(let a=0;a<12;a++)for(let b=a+1;b<12;b++)if(directed.has(k(a,b)))add(directed.get(k(a,b)),directed.get(k(b,a)),"66");
+f20.forEach(f=>{for(let i=0;i<3;i++){const u=f[i],v=f[(i+1)%3],w=f[(i+2)%3];add(directed.get(k(u,v)),directed.get(k(u,w)),"56");}});
+const dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],scale=(a,s)=>a.map(x=>x*s),sub=(a,b)=>a.map((x,i)=>x-b[i]),cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],norm=a=>scale(a,1/(Math.hypot(...a)||1));
+const pent=[];
+for(let u=0;u<12;u++){const axis=norm(ico[u]),basis1=norm(cross([0,0,1],axis)),basis2=norm(sub([0,0,1],scale(axis,dot([0,0,1],axis))));
+const ns=[];for(let v=0;v<12;v++)if(directed.has(k(u,v))){const t=norm(sub(ico[v],scale(axis,dot(ico[v],axis))));ns.push({id:directed.get(k(u,v)),ang:Math.atan2(dot(t,basis2),dot(t,basis1))});}ns.sort((a,b)=>a.ang-b.ang);pent.push(ns.map(x=>x.id));}
+const hex=f20.map(f=>[directed.get(k(f[0],f[1])),directed.get(k(f[1],f[0])),directed.get(k(f[1],f[2])),directed.get(k(f[2],f[1])),directed.get(k(f[2],f[0])),directed.get(k(f[0],f[2]))]);
+const rings=pent.map(ids=>({ids,type:"p"})).concat(hex.map(ids=>({ids,type:"h"})));
+let rx=-.27,ry=.44,zoom=1,spinning=!reduced,speed=Number(speedControl.value)/100,mode="shape",selected=0,vacancy=null,w=0,h=0,dpr=1,last=0,drag=null,proj=[],inertiaX=0,inertiaY=0;document.getElementById("spinButton").textContent=spinning?"Ⅱ  Pause spin":"▶  Spin";document.getElementById("spinButton").setAttribute("aria-pressed",String(spinning));
+function rotate(p){const cx=Math.cos(rx),sx=Math.sin(rx),cy=Math.cos(ry),sy=Math.sin(ry),y=p[1]*cx-p[2]*sx,z=p[1]*sx+p[2]*cx;return[p[0]*cy+z*sy,y,-p[0]*sy+z*cy];}
+function point(p){const r=rotate(p),u=Math.min(w,h)*.34*zoom,per=3.55/(3.55-r[2]*.12);return{x:w/2+r[0]*u*per,y:h/2+r[1]*u*per,z:r[2],s:per};}
+function render(){if(!ctx||!w||!h)return;ctx.clearRect(0,0,w,h);proj=atoms.map(a=>point(a.p));const c=point([0,0,0]),rad=Math.min(w,h)*.34*zoom,g=ctx.createRadialGradient(c.x,c.y,rad*.1,c.x,c.y,rad*1.15);g.addColorStop(0,"rgba(230,225,205,.045)");g.addColorStop(.72,"rgba(220,215,195,.015)");g.addColorStop(1,"rgba(8,14,23,0)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(c.x,c.y,rad*1.15,0,7);ctx.fill();
+rings.map(r=>({r,z:r.ids.reduce((n,id)=>n+proj[id].z,0)/r.ids.length})).sort((a,b)=>a.z-b.z).forEach(({r})=>{if(vacancy!==null&&r.ids.includes(vacancy))return;ctx.beginPath();r.ids.forEach((id,i)=>{const p=proj[id];i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y)});ctx.closePath();if(mode==="rings"){ctx.fillStyle=r.type==="p"?"rgba(255,146,121,.075)":"rgba(141,202,255,.055)";ctx.fill();ctx.strokeStyle=r.type==="p"?"rgba(255,146,121,.43)":"rgba(141,202,255,.30)";ctx.lineWidth=1;}else{ctx.strokeStyle="rgba(125,191,193,.10)";ctx.lineWidth=.8;}ctx.stroke();});
+bonds.map(b=>({b,a:proj[b.a],c:proj[b.b],z:(proj[b.a].z+proj[b.b].z)/2})).sort((a,b)=>a.z-b.z).forEach(x=>{if(vacancy!==null&&(x.b.a===vacancy||x.b.b===vacancy))return;ctx.beginPath();ctx.moveTo(x.a.x,x.a.y);ctx.lineTo(x.c.x,x.c.y);if(mode==="bonds"){ctx.strokeStyle=x.b.type==="66"?"rgba(255,146,121,.90)":"rgba(141,202,255,.78)";ctx.lineWidth=x.b.type==="66"?2.1:1.55;}else if(x.b.a===selected||x.b.b===selected){ctx.strokeStyle="rgba(216,243,106,.98)";ctx.lineWidth=2;}else{ctx.strokeStyle="rgba(221,218,208,.44)";ctx.lineWidth=1.25;}ctx.stroke();});
+if(vacancy!==null){const hole=proj[vacancy];atoms[vacancy].neighbors.forEach(id=>{ctx.beginPath();ctx.moveTo(proj[id].x,proj[id].y);ctx.lineTo(hole.x,hole.y);ctx.setLineDash([4,5]);ctx.strokeStyle="rgba(255,121,111,.8)";ctx.lineWidth=1.4;ctx.stroke();ctx.setLineDash([]);});ctx.beginPath();ctx.arc(hole.x,hole.y,13,0,7);ctx.fillStyle="rgba(255,121,111,.08)";ctx.fill();ctx.setLineDash([3,4]);ctx.strokeStyle="rgba(255,146,121,.85)";ctx.stroke();ctx.setLineDash([]);ctx.fillStyle="#ffc0b8";ctx.font="10px sans-serif";ctx.textAlign="center";ctx.fillText("VACANCY",hole.x,hole.y-19);}
+atoms.map((a,i)=>({a,p:proj[i]})).filter(x=>x.a.id!==vacancy).sort((a,b)=>a.p.z-b.p.z).forEach(({a,p})=>{const sel=a.id===selected,near=vacancy!==null&&atoms[vacancy].neighbors.includes(a.id),r=(sel?7.2:near?6.1:4.1)*p.s;if(sel||near){ctx.beginPath();ctx.arc(p.x,p.y,r*2.2,0,7);ctx.fillStyle=near?"rgba(255,121,111,.12)":"rgba(216,243,106,.13)";ctx.fill();}const grad=ctx.createRadialGradient(p.x-r*.35,p.y-r*.4,r*.1,p.x,p.y,r);if(sel){grad.addColorStop(0,"#f7ffd4");grad.addColorStop(.6,"#d8f36a");grad.addColorStop(1,"#809530");}else if(near){grad.addColorStop(0,"#ffe6df");grad.addColorStop(.62,"#ff9279");grad.addColorStop(1,"#a94f4a");}else{grad.addColorStop(0,"#fffdf4");grad.addColorStop(.56,"#d2cfc2");grad.addColorStop(1,"#77756a");}ctx.beginPath();ctx.arc(p.x,p.y,r,0,7);ctx.fillStyle=grad;ctx.fill();ctx.strokeStyle=sel?"rgba(255,255,255,.95)":"rgba(255,252,238,.48)";ctx.lineWidth=sel?1.4:.7;ctx.stroke();if(sel&&w>360){ctx.fillStyle="#eff8bd";ctx.font="10px sans-serif";ctx.textAlign="left";ctx.fillText("C"+(a.id+1),p.x+10,p.y-9);}});
+document.getElementById("stageCount").textContent=(atoms.length-(vacancy===null?0:1))+" CARBON ATOMS";}
+function resize(){const r=canvas.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);w=Math.max(1,r.width);h=Math.max(1,r.height);canvas.width=w*dpr;canvas.height=h*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);render();}
+function tick(t){const dt=Math.min(34,t-(last||t));last=t;let moved=false;if(!drag){if(spinning&&speed>0){ry+=dt*.00028*speed;moved=true;}if(Math.abs(inertiaX)+Math.abs(inertiaY)>.000015){ry+=inertiaX*dt;rx=Math.max(-1.45,Math.min(1.45,rx+inertiaY*dt));const decay=Math.pow(.90,dt/16);inertiaX*=decay;inertiaY*=decay;moved=true;}else{inertiaX=0;inertiaY=0;}}if(moved)render();requestAnimationFrame(tick);}
+function inspector(){const a=atoms[selected],ids=a.neighbors;document.getElementById("atomTitle").textContent="Carbon "+String(selected+1).padStart(2,"0");document.getElementById("atomSubtitle").textContent=vacancy===selected?"Missing site · vacancy":"One vertex in a closed cage";document.getElementById("atomCopy").textContent=vacancy===selected?"This is the missing site. In the intact cage, this carbon touched three neighbours; its removal leaves a local defect.":"This carbon is connected to three neighboring carbon atoms. Select any glowing point on the model to inspect another one.";
+const list=document.getElementById("neighborList");list.replaceChildren();ids.forEach(id=>{const s=document.createElement("span");s.className="neighbor-chip";s.textContent="C"+(id+1);list.appendChild(s);});
+document.getElementById("selectedSummary").innerHTML=vacancy===selected?"Missing site: <b>C"+(selected+1)+"</b> · 3 interrupted connections":"Selected: <b>C"+(selected+1)+"</b> · 3 carbon neighbours";document.getElementById("vacancyNote").classList.toggle("visible",vacancy!==null);document.getElementById("vacancyButton").textContent=vacancy===null?"Remove selected C":"Restore cage";document.getElementById("vacancyButton").classList.toggle("danger",vacancy!==null);document.getElementById("bondFoot").innerHTML=mode==="bonds"?"<b>Bond key:</b> coral = [6,6] · blue = [5,6].":"<b>Network:</b> three covalent connections meet at each carbon.";render();}
+function setMode(next){mode=next;modeButtons.forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.mode===mode)));const names={shape:["Molecule view","Cage structure"],bonds:["Bond map","Bond types"],rings:["Ring map","12 pentagons + 20 hexagons"],vacancy:["Defect view","Missing-atom defect"]};document.getElementById("modeCaption").textContent=names[mode][0];document.getElementById("stageMode").textContent=names[mode][1];inspector();}
+function selectAt(x,y){let best=-1,dist=1e9;proj.forEach((p,i)=>{if(i===vacancy)return;const d=Math.hypot(p.x-x,p.y-y);if(d<dist){dist=d;best=i;}});if(best>=0&&dist<25){selected=best;inspector();}}
+canvas.addEventListener("pointerdown",e=>{drag={x:e.clientX,y:e.clientY,moved:false,id:e.pointerId,time:e.timeStamp};inertiaX=0;inertiaY=0;canvas.setPointerCapture(e.pointerId);});
+canvas.addEventListener("pointermove",e=>{if(!drag||drag.id!==e.pointerId)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y,elapsed=Math.max(8,e.timeStamp-drag.time);if(Math.abs(dx)+Math.abs(dy)>2)drag.moved=true;ry+=dx*.009;rx=Math.max(-1.45,Math.min(1.45,rx+dy*.009));inertiaX=dx*.009/elapsed;inertiaY=dy*.009/elapsed;drag.x=e.clientX;drag.y=e.clientY;drag.time=e.timeStamp;render();});
+canvas.addEventListener("pointerup",e=>{if(!drag)return;if(!drag.moved){const r=canvas.getBoundingClientRect();selectAt(e.clientX-r.left,e.clientY-r.top);}drag=null;});canvas.addEventListener("pointercancel",()=>drag=null);
+canvas.addEventListener("wheel",e=>{e.preventDefault();zoom=Math.max(.72,Math.min(1.45,zoom*(e.deltaY<0?1.08:.93)));render();},{passive:false});
+canvas.addEventListener("keydown",e=>{const turns={ArrowLeft:[0,-.13],ArrowRight:[0,.13],ArrowUp:[-.13,0],ArrowDown:[.13,0]};if(!turns[e.key])return;e.preventDefault();rx+=turns[e.key][0];ry+=turns[e.key][1];render();});
+modeButtons.forEach(b=>b.addEventListener("click",()=>setMode(b.dataset.mode)));
+document.getElementById("spinButton").addEventListener("click",e=>{spinning=!spinning;e.currentTarget.textContent=spinning?"Ⅱ  Pause spin":"▶  Spin";e.currentTarget.setAttribute("aria-pressed",String(spinning));});
+document.getElementById("vacancyButton").addEventListener("click",()=>{if(vacancy===null){vacancy=selected;setMode("vacancy");}else{vacancy=null;setMode("shape");}});
+document.getElementById("resetButton").addEventListener("click",()=>{vacancy=null;selected=0;rx=-.27;ry=.44;zoom=1;setMode("shape");});
+speedControl.addEventListener("input",()=>speed=Number(speedControl.value)/100);window.addEventListener("resize",resize);
+
+const lessons={
+shape:["Why does the cage curve?","<p>C₆₀ is a hollow molecular allotrope of carbon. Its 60 atoms sit at the corners of 12 pentagons and 20 hexagons. The five-sided rings introduce curvature, closing the carbon network into a rounded cage.</p><div class='math-line'><span class='math-chip'>12 pentagons</span><span>+</span><span class='math-chip'>20 hexagons</span><span>=</span><span class='math-chip'>32 faces</span></div><p class='callout'>Topology check: 60 vertices − 90 edges + 32 faces = 2, Euler’s relation for a closed polyhedron.</p>"],
+valency:["Carbon has four outer-shell electrons.","<p>In C₆₀, each carbon is directly joined to <strong>three</strong> neighboring carbon atoms. Each uses three sp² orbitals to form σ bonds; its remaining p electron contributes to a shared, delocalized π system over the curved cage.</p><p class='callout'>For your model: count three neighboring atoms around each carbon. The π bonding is shared across the cage, so it is not a fourth separate stick to another atom.</p>"],
+bonds:["The two kinds of C–C edge.","<p>C₆₀ has <strong>30 shorter [6,6] bonds</strong>, each between two hexagons, and <strong>60 longer [5,6] bonds</strong>, each between a pentagon and a hexagon.</p><div class='bond-legend'><span><i class='legend-dot' style='background:#ff9279'></i>30 [6,6] · shorter</span><span><i class='legend-dot' style='background:#8dcaff'></i>60 [5,6] · longer</span></div><p class='callout'>The actual π electrons are spread through the molecule; bond lines are a simplified picture.</p>"],
+vacancies:["What is a vacancy?","<p>A vacancy is a missing atom in a structure. Use <strong>Remove selected C</strong> above: the open site is outlined and its three interrupted links become dashed.</p><p class='callout'>This is a teaching sketch of a defect, not a relaxed C₅₉ molecule. Real atoms can shift and new bonds may form around a vacancy.</p>"]};
+document.querySelectorAll(".lesson-tab").forEach(tab=>tab.addEventListener("click",()=>{document.querySelectorAll(".lesson-tab").forEach(t=>t.setAttribute("aria-selected",String(t===tab)));const item=lessons[tab.dataset.topic],panel=document.getElementById("topic-panel");panel.setAttribute("aria-labelledby",tab.id);panel.innerHTML="<h3>"+item[0]+"</h3>"+item[1];if(tab.dataset.topic==="bonds")setMode("bonds");if(tab.dataset.topic==="vacancies")setMode("vacancy");}));
+const quiz=[{q:"Question 1 of 3 · How many carbon atoms are in C₆₀?",o:["20","60","90"],a:1,e:"C₆₀ means one molecule contains 60 carbon atoms."},{q:"Question 2 of 3 · Which rings help close the cage?",o:["Only hexagons","12 pentagons and 20 hexagons","60 pentagons"],a:1,e:"The 12 pentagons and 20 hexagons fit together to make the closed cage."},{q:"Question 3 of 3 · How many carbon neighbors connect to each C?",o:["2","3","4"],a:1,e:"Each carbon has three direct carbon neighbors; its remaining p electron contributes to shared π bonding."}];let qi=0,answered=false;
+function quizDraw(){const q=quiz[qi],box=document.getElementById("quizOptions");document.getElementById("quizQuestion").textContent=q.q;box.replaceChildren();q.o.forEach((label,i)=>{const b=document.createElement("button");b.className="quiz-option";b.textContent=label;b.addEventListener("click",()=>{if(answered)return;answered=true;const ok=i===q.a;b.classList.add(ok?"correct":"wrong");if(!ok)box.children[q.a].classList.add("correct");document.getElementById("quizFeedback").textContent=(ok?"Correct. ":"Not quite. ")+q.e;document.getElementById("quizNext").hidden=false;});box.appendChild(b);});document.getElementById("quizFeedback").textContent="Choose an answer to check what you remember.";document.getElementById("quizNext").hidden=true;answered=false;}
+document.getElementById("quizNext").addEventListener("click",()=>{qi=(qi+1)%quiz.length;quizDraw();});quizDraw();inspector();resize();requestAnimationFrame(tick);
+}());
+</script>
+</body>
+</html>
